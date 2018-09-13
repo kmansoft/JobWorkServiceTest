@@ -20,7 +20,7 @@ public class JobWorkServiceActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mJobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-		mJobInfo = new JobInfo.Builder(R.string.job_service_created, new ComponentName(this, JobWorkService.class))
+		mJobInfo = new JobInfo.Builder(JobWorkService.JOB_ID_1, new ComponentName(this, JobWorkService.class))
 				.setOverrideDeadline(0).build();
 
 		setContentView(R.layout.job_work_service_activity);

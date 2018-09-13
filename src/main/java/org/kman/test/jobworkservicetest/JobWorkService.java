@@ -1,6 +1,8 @@
 package org.kman.test.jobworkservicetest;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.job.JobParameters;
@@ -12,12 +14,17 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class JobWorkService extends JobService {
+	private static final String NM_CHANNEL_ID = "jobworkservice";
+
 	private NotificationManager mNM;
 	private CommandProcessor mCurProcessor;
+
+	public static final int JOB_ID_1 = 1;
 
 	/**
 	 * This is a task to dequeue and process work in the background.
 	 */
+	@SuppressLint("StaticFieldLeak")
 	final class CommandProcessor extends AsyncTask<Void, Void, Void> {
 		private final JobParameters mParams;
 
@@ -29,7 +36,10 @@ public class JobWorkService extends JobService {
 		protected Void doInBackground(Void... params) {
 			boolean cancelled;
 			JobWorkItem work;
-			/**
+
+			final int notificationId = mParams.getJobId();
+
+			/*
 			 * Iterate over available work.  Once dequeueWork() returns null, the
 			 * job's work queue is empty and the job has stopped, so we can let this
 			 * async task complete.
@@ -37,17 +47,18 @@ public class JobWorkService extends JobService {
 			while (!(cancelled = isCancelled()) && (work = mParams.dequeueWork()) != null) {
 				String txt = work.getIntent().getStringExtra("name");
 				Log.i("JobWorkService", "Processing work: " + work + ", msg: " + txt);
-				showNotification(txt);
+				showNotification(notificationId, txt);
 				// Process work here...  we'll pretend by sleeping.
 				try {
 					Thread.sleep(5000);
 				} catch (InterruptedException e) {
+					Log.w("JobWorkService", "Interrupted", e);
 				}
-				hideNotification();
 				// Tell system we have finished processing the work.
 				Log.i("JobWorkService", "Done with: " + work);
 				mParams.completeWork(work);
 			}
+			hideNotification(notificationId);
 			if (cancelled) {
 				Log.i("JobWorkService", "CANCELLED!");
 			}
@@ -63,7 +74,7 @@ public class JobWorkService extends JobService {
 
 	@Override
 	public void onDestroy() {
-		hideNotification();
+		hideNotification(JOB_ID_1);
 		Toast.makeText(this, R.string.job_service_destroyed, Toast.LENGTH_SHORT).show();
 	}
 
@@ -89,14 +100,20 @@ public class JobWorkService extends JobService {
 	/**
 	 * Show a notification while this service is running.
 	 */
-	private void showNotification(String text) {
+	private void showNotification(int notificationId, String text) {
+		if (mNM.getNotificationChannel(NM_CHANNEL_ID) == null) {
+			final NotificationChannel channel = new NotificationChannel(NM_CHANNEL_ID, getString(R.string.app_name),
+					NotificationManager.IMPORTANCE_DEFAULT);
+			channel.setDescription(getString(R.string.service_name));
+			mNM.createNotificationChannel(channel);
+		}
+
 		// The PendingIntent to launch our activity if the user selects this notification
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, JobWorkServiceActivity
 				.class), 0);
 		// Set the info for the views that show in the notification panel.
-		Notification.Builder noteBuilder = new Notification.Builder(this).setSmallIcon(R.drawable.stat_sample)
-				// the
-				// status icon
+		Notification.Builder noteBuilder = new Notification.Builder(this, NM_CHANNEL_ID)
+				.setSmallIcon(R.drawable.stat_sample) // the status icon
 				.setTicker(text)  // the status text
 				.setWhen(System.currentTimeMillis())  // the time stamp
 				.setContentTitle(getText(R.string.service_start_arguments_label))  // the label
@@ -105,11 +122,10 @@ public class JobWorkService extends JobService {
 		// We show this for as long as our service is processing a command.
 		noteBuilder.setOngoing(true);
 		// Send the notification.
-		// We use a string id because it is a unique number.  We use it later to cancel.
-		mNM.notify(R.string.job_service_created, noteBuilder.build());
+		mNM.notify(notificationId, noteBuilder.build());
 	}
 
-	private void hideNotification() {
-		mNM.cancel(R.string.job_service_created);
+	private void hideNotification(int notificationId) {
+		mNM.cancel(notificationId);
 	}
 }
