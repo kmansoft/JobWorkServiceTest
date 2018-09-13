@@ -3,13 +3,23 @@ A test project for a bug in JobService / JobWorkItem
 
 Please see JobWorkService.java and make sure that DEQUEUE_ALL_THEN_PROCESS = true (near the top).
 
+- Run the app
+- Click on Enqueue One
+- Wait for notification that the job service is processing a work item
+- adb shell dumpsys jobscheduler -> you'll see running Service / Job / Workitem
+- Wait for notification to go away (work item is done processing)
+- adb shell dumpsys jobscheduler -> you'll see **stuck** Service
+- adb shell dumpsys power -> you'll see **stuck** wake lock
+
 The documentation says:
 
 https://developer.android.com/reference/android/app/job/JobParameters#dequeueWork()
 
+```
 You do not, however, have to complete each returned work item before deqeueing the next one -- you can use
 dequeueWork() multiple times before completing previous work if you want to process work in parallel, and you
 can complete the work in whatever order you want.
+```
 
 And so we do - dequeue all work items and submit them as runnables to an executor.
 
