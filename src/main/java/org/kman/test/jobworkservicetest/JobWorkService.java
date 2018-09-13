@@ -186,6 +186,39 @@ public class JobWorkService extends JobService {
 	 *
 	 * And so we do - dequeue all work items and submit them as runnables to an executor.
 	 *
+	 * However:
+	 *
+	 * This makes it so that the service is never stopped and the job is never finished.
+	 *
+	 * After we've called params.completeWork(item):
+	 *
+	 * 1 - the Job stays running
+	 *
+	 * Slot #0: b42dd0b #u0a88/1 org.kman.test.jobworkservicetest/.JobWorkService
+	 * Running for: +6s292ms, timeout at: +9m53s741ms
+	 * u0a88 tag=*job* /org.kman.test.jobworkservicetest/.JobWorkService
+	 * Source: uid=u0a88 user=0 pkg=org.kman.test.jobworkservicetest
+	 * Required constraints: DEADLINE
+	 * Enqueue time: -6s292ms
+	 * Run time: earliest=none, latest=-6s293ms
+	 * Evaluated priority: 40
+	 * Active at -6s292ms, pending for 0
+	 *
+	 * Note that there are no work items in this output, the service is running "on its own", the "old way", before
+	 * JobWorkItems existed (pre-8.0).
+	 *
+	 * 2 - The wake lock associated with the job is still held, by Android:
+	 *
+	 * Wake Locks: size=1
+	 * PARTIAL_WAKE_LOCK '*job* /org.kman.test.jobworkservicetest/.JobWorkService' ACQ=-1m16s23ms
+	 * LONG (uid=1000 pid=1872 ws=WorkSource{10088})
+	 *
+	 * Presumably this will time out when the currently "running" stuck job is told to stop - which takes 10 minutes.
+	 * A hell of a battery drain.
+	 *
+	 * 3 - More JobWorkItem's can be enqueue'd but...
+	 *
+	 * The service never receives them (at least not until the currently "running" stuck job finishes).
 	 */
 	private static void dequeueAllThenProcess(Context context, JobParameters params) {
 		Log.i("JobWorkService", "dequeueThenProcess");
