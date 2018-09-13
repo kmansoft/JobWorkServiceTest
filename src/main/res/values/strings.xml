@@ -10,10 +10,13 @@
 
 	<string name="enqueue1_job">Enqueue \"One\"</string>
 	<string name="enqueue2_job">Enqueue \"Two\"</string>
-	<string name="enqueue3_job">Enqueue \"Three\"</string>
 	<string name="job_service_created">JobService created.</string>
 	<string name="job_service_destroyed">JobService destroyed.</string>
 	<string name="kill_process">Kill Process</string>
 
 	<string name="service_start_arguments_label">Sample Service Start Arguments</string>
+
+	<string name="enqueue_network1_job">Enqueue with network \"One\"</string>
+	<string name="enqueue_network2_job">Enqueue with network \"Two\"</string>
+
 </resources>

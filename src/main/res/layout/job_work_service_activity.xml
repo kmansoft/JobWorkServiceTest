@@ -31,17 +31,35 @@
 	</Button>
 
 	<Button
-		android:id="@+id/enqueue3"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/enqueue3_job">
-	</Button>
-
-	<Button
 		android:id="@+id/kill"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="@string/kill_process">
 	</Button>
+
+	<!-- New buttons - jobs that use networking -->
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
+
+		<Button
+			android:id="@+id/enqueue_network1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/enqueue_network1_job">
+
+			<requestFocus/>
+		</Button>
+
+		<Button
+			android:id="@+id/enqueue_network2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/enqueue_network2_job">
+		</Button>
+
+	</LinearLayout>
 
 </LinearLayout>

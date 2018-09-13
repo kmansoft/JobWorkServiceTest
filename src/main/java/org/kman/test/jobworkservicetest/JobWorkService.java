@@ -21,6 +21,9 @@ public class JobWorkService extends JobService {
 
 	public static final int JOB_ID_1 = 1;
 
+	public static final int JOB_ID_NETWORK_1 = 101;
+	public static final int JOB_ID_NETWORK_2 = 102;
+
 	/**
 	 * This is a task to dequeue and process work in the background.
 	 */
