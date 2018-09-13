@@ -21,6 +21,12 @@ public class JobWorkServiceActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mJobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+
+		// Start clean
+		mJobScheduler.cancel(JobWorkService.JOB_ID_1);
+		mJobScheduler.cancel(JobWorkService.JOB_ID_NETWORK_1);
+		mJobScheduler.cancel(JobWorkService.JOB_ID_NETWORK_2);
+
 		mJobInfo = new JobInfo.Builder(JobWorkService.JOB_ID_1, new ComponentName(this, JobWorkService.class))
 				.setOverrideDeadline(0).build();
 
@@ -44,6 +50,7 @@ public class JobWorkServiceActivity extends Activity {
 		button.setOnClickListener(mEnqueueNetworkingListener);
 	}
 
+	// Not used, not where the bug is
 	private void onClickEnqueueNetwork(View v) {
 		final int jobId;
 

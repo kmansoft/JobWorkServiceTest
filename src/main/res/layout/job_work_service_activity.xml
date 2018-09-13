@@ -37,12 +37,17 @@
 		android:text="@string/kill_process">
 	</Button>
 
-	<!-- New buttons - jobs that use networking -->
+	<!-- New buttons - jobs that use networking
+
+	Not needed, the bug is somewhere else, see JobWorkService.dequeueThenProcess
+
+	-->
 
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:orientation="vertical">
+		android:orientation="vertical"
+		android:visibility="gone">
 
 		<Button
 			android:id="@+id/enqueue_network1"
