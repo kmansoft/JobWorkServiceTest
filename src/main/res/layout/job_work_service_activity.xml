@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:gravity="center_horizontal"
+	android:orientation="vertical"
+	android:padding="8dp">
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingBottom="8dp"
+		android:text="@string/job_work_service_controller"
+		android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+	<Button
+		android:id="@+id/enqueue1"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/enqueue1_job">
+
+		<requestFocus/>
+	</Button>
+
+	<Button
+		android:id="@+id/enqueue2"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/enqueue2_job">
+	</Button>
+
+	<Button
+		android:id="@+id/enqueue3"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/enqueue3_job">
+	</Button>
+
+	<Button
+		android:id="@+id/kill"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/kill_process">
+	</Button>
+
+</LinearLayout>

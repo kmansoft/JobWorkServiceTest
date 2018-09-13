@@ -1,0 +1,18 @@
+<resources>
+	<string name="app_name">JobWorkServiceTest</string>
+	<string name="action_settings">Settings</string>
+
+	<string name="job_work_service_controller">This demonstrates how
+        work can be enqueued and executed by a job, running work in the job until
+        everything is complete.
+    </string>
+
+	<string name="enqueue1_job">Enqueue \"One\"</string>
+	<string name="enqueue2_job">Enqueue \"Two\"</string>
+	<string name="enqueue3_job">Enqueue \"Three\"</string>
+	<string name="job_service_created">JobService created.</string>
+	<string name="job_service_destroyed">JobService destroyed.</string>
+	<string name="kill_process">Kill Process</string>
+
+	<string name="service_start_arguments_label">Sample Service Start Arguments</string>
+</resources>
